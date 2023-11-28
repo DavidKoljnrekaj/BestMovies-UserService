@@ -1,14 +1,16 @@
 # user-service/Dockerfile
-FROM node:18.14.0
+FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+# Only copy the package.json file to work directory
+COPY package.json .
 
-RUN npm install
+# Install all Packages
+RUN npm install && npm cache clean --force
 
-COPY . .
+COPY src/ /app/
 
 EXPOSE 5002
 
-CMD ["node", "app.js"]
+CMD ["node", "server.js"]
