@@ -1,11 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
-const PORT = process.env.PORT || 5001;
+
+const PORT = process.env.PORT || 5002;
+
 const userRoutes = require('./routes/userRoutes');
 const mongoose = require('mongoose');
 
-const dbURI = ''; //Setup DB and add URI here
+const dbURI = 'mongodb+srv://admin:Asdf1234@bestmoviesdb-database.kmj8xwa.mongodb.net/?retryWrites=true&w=majority'; //Setup DB and add URI here
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/user', userRoutes);
 app.use(express.static('build'));
 
@@ -14,13 +20,6 @@ app.listen(PORT, () => {
   });
   
   //database
-  mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-  mongoose.connection.on('connected', () => {
-    console.log(`Mongoose connected to ${dbURI}`);
-  });
-  mongoose.connection.on('error', (err) => {
-    console.log(`Mongoose connection error: ${err}`);
-  });
-  mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose disconnected');
-  });
+  mongoose.connect(dbURI, {})
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.log(err));

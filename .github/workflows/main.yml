@@ -1,0 +1,57 @@
+name: CI/CD for User Service
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Setup Gcloud
+        uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
+
+      - name: Configure Google Cloud
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+          gcloud container clusters get-credentials bestmoviesdb-cluster --zone europe-north1
+          gcloud auth configure-docker
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: gcr.io/bestmoviesdb/user-service:${{ github.sha }}
+
+      - name: Update Kubernetes Deployment
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          sed -i 's|gcr.io/bestmoviesdb/user-service:.*|gcr.io/bestmoviesdb/user-service:'"$GITHUB_SHA"'|' ./kubernetes/user-server-deployment.yaml
+  
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f ./kubernetes/user-server-deployment.yaml
+          kubectl apply -f ./kubernetes/user-server-service.yaml    
+          echo "Deployment completed successfully."
