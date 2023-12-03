@@ -37,6 +37,7 @@ describe('User Routes', () => {
       .expect(200);
 
     expect(res.body).toHaveProperty('message');
+    expect(res.body).toHaveProperty('token');
     expect(res.body.message).toBe("Login successful");
   },10000);
 });
