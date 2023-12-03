@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const { generateToken } = require('../Jwt');
 
 exports.signup = async (req, res, next) => {
   try {
@@ -13,8 +14,9 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const result = await userService.login(username, password);
-    res.json(result);
+    const message = await userService.login(username, password);
+    const token = generateToken({ username: username });
+    res.json({message, token});
   } catch (error) {
     next(error);
   }

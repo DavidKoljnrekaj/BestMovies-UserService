@@ -32,7 +32,7 @@ exports.login = async (username, password) => {
       throw new Error('Incorrect password');
     }
 
-    return { message: 'Login successful' };
+    return  'Login successful' ;
   } catch (error) {
     throw error;
   }
