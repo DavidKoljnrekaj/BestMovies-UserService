@@ -13,7 +13,7 @@ app.use('/user', userRoutes);
 beforeAll(async () => {
    await mongoose.connect("mongodb+srv://admin:Asdf1234@bestmoviesdb-database.kmj8xwa.mongodb.net/?retryWrites=true&w=majority"
    , { useNewUrlParser: true, useUnifiedTopology: true });
-});
+},100000);
   
 afterAll(async () => {
    await mongoose.disconnect();
@@ -37,6 +37,7 @@ describe('User Routes', () => {
       .expect(200);
 
     expect(res.body).toHaveProperty('message');
+    expect(res.body).toHaveProperty('token');
     expect(res.body.message).toBe("Login successful");
   },10000);
 });
