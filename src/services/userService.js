@@ -43,7 +43,7 @@ exports.addToWatchlist = async (username, movieId) => {
   const user = await User.findOne({ username });
   user.watchlist.push(movieId);
     await user.save();
-    return 'Watchlist updated';
+    return 'Movie added to watchlist';
   } catch (error) {
     throw error;
   }
@@ -54,7 +54,7 @@ exports.removeFromWatchlist = async (username, movieId) => {
   const user = await User.findOne({ username });
   user.watchlist.pull(movieId);
     await user.save();
-    return 'Watchlist updated';
+    return 'Movie removed from watchlist';
   } catch (error) {
     throw error;
   }

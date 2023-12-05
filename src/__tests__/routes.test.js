@@ -21,6 +21,9 @@ afterAll(async () => {
 
 
 describe('User Routes', () => {
+  let token = '';
+  const movieId = '775244';
+
   it('should sign up a user', async () => {
     const res = await request(app)
       .post('/user/signup')
@@ -35,9 +38,52 @@ describe('User Routes', () => {
       .send({ username: 'admin', password: 'admin' })
       .expect('Content-Type', /json/)
       .expect(200);
-
+    token = res.body.token;
     expect(res.body).toHaveProperty('message');
     expect(res.body).toHaveProperty('token');
     expect(res.body.message).toBe("Login successful");
   },10000);
+
+  it('should add a movie to the watchlist', async () => {
+    const res = await request(app)
+      .post(`/user/watchlist`)
+      .send({ movieId: movieId})
+      .set('Authorization', `Bearer ${token}`) 
+      .expect(200);
+
+    expect(res.body).toHaveProperty('message');
+    expect(res.body.message).toBe('Movie added to watchlist');
+  });
+
+  it('should check if the movie is in the watchlist', async () => {
+    const res = await request(app)
+      .get(`/user/watchlist/${movieId}`)
+      .set('Authorization', `Bearer ${token}`) 
+      .expect(200);
+
+    expect(res.body).toHaveProperty('inWatchList');
+    expect(res.body.inWatchList).toBe(true);
+  });
+
+  it('should remove a movie from the watchlist', async () => {
+    const res = await request(app)
+      .delete(`/user/watchlist`)
+      .send({ movieId: movieId})
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    expect(res.body).toHaveProperty('message');
+    expect(res.body.message).toBe('Movie removed from watchlist');
+  });
+
+  it('should check if the movie is in the watchlist', async () => {
+    const res = await request(app)
+      .get(`/user/watchlist/${movieId}`)
+      .set('Authorization', `Bearer ${token}`) 
+      .expect(200);
+
+    expect(res.body).toHaveProperty('inWatchList');
+    expect(res.body.inWatchList).toBe(false);
+  });
+
 });

@@ -27,7 +27,7 @@ exports.addToWatchlist = async (req, res, next) => {
     const { movieId } = req.body;
     const username = req.user.username;
     const message = await userService.addToWatchlist(username, movieId);
-    res.json(message);
+    res.json({message});
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,7 @@ exports.removeFromWatchlist = async (req, res, next) => {
     const { movieId } = req.body;
     const username = req.user.username;
     const message = await userService.removeFromWatchlist(username, movieId);
-    res.json(message);
+    res.json({message});
   } catch (error) {
     next(error);
   }
