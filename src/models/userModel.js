@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  watchlist: [String],
 });
 
 const UserModel = mongoose.model('User', UserSchema);
