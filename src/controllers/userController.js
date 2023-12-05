@@ -47,8 +47,8 @@ exports.removeFromWatchlist = async (req, res, next) => {
 exports.getWatchlist = async (req, res, next) => {
   try {
     const username = req.user.username;
-    const data = await userService.getWatchlist(username);
-    res.json(data);
+    const watchlist = await userService.getWatchlist(username);
+    res.json({ watchlist });
   } catch (error) {
     next(error);
   }
