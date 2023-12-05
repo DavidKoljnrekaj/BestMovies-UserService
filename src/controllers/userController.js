@@ -22,4 +22,34 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.addToWatchlist = async (req, res, next) => {
+  try {
+    const { movieId } = req.body;
+    const username = req.user.username;
+    const message = await userService.addToWatchlist(username, movieId);
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+};
 
+exports.removeFromWatchlist = async (req, res, next) => {
+  try {
+    const { movieId } = req.body;
+    const username = req.user.username;
+    const message = await userService.removeFromWatchlist(username, movieId);
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getWatchlist = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const data = await userService.getWatchlist(username);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
