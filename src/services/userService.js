@@ -38,3 +38,42 @@ exports.login = async (username, password) => {
   }
 };
 
+exports.addToWatchlist = async (username, movieId) => {
+  try {
+  const user = await User.findOne({ username });
+  user.watchlist.push(movieId);
+    await user.save();
+    return 'Watchlist updated';
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.removeFromWatchlist = async (username, movieId) => {
+  try {
+  const user = await User.findOne({ username });
+  user.watchlist.pull(movieId);
+    await user.save();
+    return 'Watchlist updated';
+  } catch (error) {
+    throw error;
+  }
+};
+exports.getWatchlist = async (username) => {
+  try {
+  const user = await User.findOne({ username });
+    return user.watchlist;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.isInWatchlist = async (movieId,username) => {
+  try {
+    const watchlist = await this.getWatchlist(username);
+    return watchlist.includes(movieId);
+  } catch (error) {
+    throw error;
+  }
+};
+

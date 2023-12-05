@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const secret="3d8f9a2s8f9sdf8sd9f8sdf8sdf8sdf8";
 
 function generateToken(user) {
-  return jwt.sign(user, secret);
+  return jwt.sign(user, secret, { expiresIn: '24h' });
 }
 
 function authenticateToken(req, res, next) {
