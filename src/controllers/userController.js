@@ -53,3 +53,14 @@ exports.getWatchlist = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.isInWatchlist = async (req, res, next) => {
+  try {
+    const username = req.user.username;
+    const { movieId } = req.params;
+    const inWatchList = await userService.isInWatchlist(movieId,username);
+    res.json({ inWatchList });
+  } catch (error) {
+    next(error);
+  }
+};

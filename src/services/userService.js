@@ -68,3 +68,12 @@ exports.getWatchlist = async (username) => {
   }
 };
 
+exports.isInWatchlist = async (movieId,username) => {
+  try {
+    const watchlist = await this.getWatchlist(username);
+    return watchlist.includes(movieId);
+  } catch (error) {
+    throw error;
+  }
+};
+

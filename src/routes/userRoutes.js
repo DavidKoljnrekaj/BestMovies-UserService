@@ -9,6 +9,7 @@ router.post('/login', userController.login);
 router.post('/watchlist', authenticateToken, userController.addToWatchlist);
 router.delete('/watchlist',authenticateToken, userController.removeFromWatchlist);
 router.get('/watchlist', authenticateToken, userController.getWatchlist);
+router.get('/watchlist/:movieId', authenticateToken, userController.isInWatchlist);
 
 
 module.exports = router;
