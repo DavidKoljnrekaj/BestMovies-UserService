@@ -20,3 +20,14 @@ exports.getReviews = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.deleteReview = async (req, res, next) => {
+    try {
+        const { movieId } = req.params;
+        const username = req.user.username;
+        const message = await reviewService.deleteReview(username, movieId);
+        res.json({ message });
+    } catch (error) {
+        next(error);
+    }
+}

@@ -18,3 +18,12 @@ exports.getReviews = async (movieId) => {
     throw error;
   }
 };
+
+exports.deleteReview = async (username, movieId) => {
+  try {
+    await Review.deleteOne({ username, movieId });
+    return 'Review deleted';
+  } catch (error) {
+    throw error;
+  }
+}
