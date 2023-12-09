@@ -22,6 +22,7 @@ app.use(cors({
 const PORT = process.env.PORT || 5002;
 
 const userRoutes = require('./routes/userRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const mongoose = require('mongoose');
 
 const dbURI = 'mongodb+srv://admin:Asdf1234@bestmoviesdb-database.kmj8xwa.mongodb.net/?retryWrites=true&w=majority'; //Setup DB and add URI here
@@ -29,6 +30,7 @@ const dbURI = 'mongodb+srv://admin:Asdf1234@bestmoviesdb-database.kmj8xwa.mongod
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
+app.use('/review', reviewRoutes);
 app.use(express.static('build'));
 
 app.listen(PORT, () => {
